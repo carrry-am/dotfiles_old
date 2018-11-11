@@ -157,7 +157,7 @@ let g:neocomplete#sources#dictionary#dictionaries = {
     \ }
 
 "辞書ファイル設定する場合は上記にこちら追加
-"    \ 'php' : $HOME.'/.vim/dein/php.dict'
+"    \ 'php' : $HOME.'/.vim/dein/dict/php.dict'
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
