@@ -32,6 +32,8 @@ if dein#load_state('$HOME/.vim/dein')
   " Git関連
   call dein#add('airblade/vim-gitgutter')
   call dein#add('tpope/vim-fugitive')
+  " taglist.vim 
+  call dein#add('vim-scripts/taglist.vim')
   
   " Required:
   call dein#end()
@@ -54,7 +56,8 @@ let g:NERDTreeShowBookmarks=1
 " autocmd vimenter * NERDTree
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
+inoremap <C-n> <ESC>:NERDTreeToggle<CR>
 
 " NERDTress File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
@@ -218,11 +221,16 @@ set updatetime=250
 
 
 "----------------------------------------------------------
+"  taglist.vim
+"----------------------------------------------------------
+nnoremap t :TlistOpen<ESC>
+"----------------------------------------------------------
 "  プラグイン関連の微調整
 "----------------------------------------------------------
 " バックスペースが使用できなくなるときに使用
 "set backspace=indent,eol,start
-
+" ファイルが大きいなどでシンタックスが無効になってしまった時用
+"set redrawtime=10000
 
 "----------------------------------------------------------
 "  プラグイン以外の基本設定
@@ -230,8 +238,15 @@ set updatetime=250
 " カラースキーム
 colorscheme darkblue
 
-" 文字コードをUFT-8に設定
-set fenc=utf-8
+" vim内部で使用される文字コード
+set encoding=utf-8
+" バッファのファイルの文字コード（fileencodingが空の場合はencodingと同じ値となるため外す
+"set fileencoding=utf-8
+" 編集開始時に考慮する文字コード(自動判別の設定)
+set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,utf-8 
+"ファイルフォーマット
+set fileformats=unix,dos,mac
+
 " バックアップファイルを作らない
 set nobackup
 " スワップファイルを作らない
@@ -279,13 +294,13 @@ set shiftwidth=2
 
 " 検索系
 " 検索文字列が小文字の場合は大文字小文字を区別なく検索する
-set ignorecase
+"set ignorecase
 " 検索文字列に大文字が含まれている場合は区別して検索する
-set smartcase
+"set smartcase
 " 検索文字列入力時に順次対象文字列にヒットさせる
 set incsearch
 " 検索時に最後まで行ったら最初に戻る
-set wrapscan
+" set wrapscan
 " 検索語をハイライト表示
 set hlsearch
 " ESC連打でハイライト解除
@@ -311,3 +326,34 @@ noremap! <C-j> <esc>
 "inoremap {<Enter> {}<Left><CR><ESC><S-o>
 "inoremap [<Enter> []<Left><CR><ESC><S-o>
 "inoremap (<Enter> ()<Left><CR><ESC><S-o>
+
+" phpファイルの場合のみtags読み込みませる
+" ;を付けることで、親をたどってtagsファイルを探してくれる模様
+:autocmd FileType php set tags=tags;
+" tagsジャンプの時に複数ある時は一覧表示                                        
+nnoremap <C-]> g<C-]> 
+
+" スクロールを滑らかにする
+map <C-U> <C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y>
+map <C-D> <C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E>
+
+" ファイルを開く際リスト表示・選択できるようにする
+set wildmenu wildmode=list:full
+
+" syntaxが消えてしまったりする際使用
+"redrawtime=10000
+
+" マウスを使う場合
+"set mouse=a
+"set ttymouse=xterm2
+
+" ctags
+" 開いているファイルのディレクトリから、ホームディレクトリまでtagsを探す
+set tags=./tags;$HOME
+" tagsジャンプの時に複数ある場合は一覧表示                                        
+nnoremap <C-]> g<C-]> 
+inoremap <C-]> <ESC>g<C-]> 
+
+" 最後にヤンクしたものをペースト
+nnoremap P "0p<CR>
+
