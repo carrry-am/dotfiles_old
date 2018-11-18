@@ -6,8 +6,7 @@ if [ -f /etc/bashrc ]; then
 fi
 
 export PS1="[\u@\[\e[1;33m\]\h \[\e[m\]\w]$ "
-# Uncomment the following line if you don't like systemctl's auto-paging feature:
-# export SYSTEMD_PAGER=
+export PATH=$HOME/.config/composer/vendor/bin:$PATH
 
 # User specific aliases and functions
 alias vi="vim"

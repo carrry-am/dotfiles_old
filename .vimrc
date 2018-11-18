@@ -34,8 +34,10 @@ if dein#load_state('$HOME/.vim/dein')
   call dein#add('tpope/vim-fugitive')
   " taglist.vim 
   call dein#add('vim-scripts/taglist.vim')
+  " シンタックスチェック
+  call dein#add('w0rp/ale')
   
-  " Required:
+" Required:
   call dein#end()
   call dein#save_state()
 endif
@@ -223,7 +225,62 @@ set updatetime=250
 "----------------------------------------------------------
 "  taglist.vim
 "----------------------------------------------------------
-nnoremap t :TlistOpen<ESC>
+nnoremap tl :TlistOpen<ESC>
+
+
+"----------------------------------------------------------
+"  ale
+"----------------------------------------------------------
+" デフォルトではオフにしておく場合
+let g:ale_enabled = 0
+
+" オンとオフを切り替えられるようにする
+nnoremap l<CR> :ALEEnable<CR>
+nnoremap loff<CR> :ALEDisable<CR>
+
+" syntaxチェックのみ使用する
+let g:ale_linters = {
+      \ 'php': ['php']
+      \}
+
+" ファイル変更時にはチェックを走らせない（開いたときと保存時のみ走らせる)
+let g:ale_lint_on_text_changed = 0
+
+" phpcsのチェックを行う場合の規約指定
+"let g:ale_php_phpcs_standard = 'PSR1,PSR2'
+
+" vim-airlineの何かを有効にする
+"let g:airline#extensions#ale#enabled = 1
+
+" vim-airlineを入れていない場合のステータスラインの設定
+" vim-airlineをいれるまでは、これでしのぐ
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+set statusline=%{LinterStatus()}
+
+" ERRORを表す文字列
+let g:ale_echo_msg_error_str = 'E'
+" WARNINGを表す文字列
+let g:ale_echo_msg_warning_str = 'W'
+"表示するメッセージのフォーマット(リンター＋メッセージ＋重要度)
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+" <C-k>で前のエラーへ、<C-j>で次のエラーへ
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+
 "----------------------------------------------------------
 "  プラグイン関連の微調整
 "----------------------------------------------------------
@@ -299,8 +356,8 @@ set shiftwidth=2
 "set smartcase
 " 検索文字列入力時に順次対象文字列にヒットさせる
 set incsearch
-" 検索時に最後まで行ったら最初に戻る
-" set wrapscan
+" 検索時に最後まで行ったら最初に戻るをオフにする
+set nowrapscan
 " 検索語をハイライト表示
 set hlsearch
 " ESC連打でハイライト解除
@@ -327,12 +384,6 @@ noremap! <C-j> <esc>
 "inoremap [<Enter> []<Left><CR><ESC><S-o>
 "inoremap (<Enter> ()<Left><CR><ESC><S-o>
 
-" phpファイルの場合のみtags読み込みませる
-" ;を付けることで、親をたどってtagsファイルを探してくれる模様
-:autocmd FileType php set tags=tags;
-" tagsジャンプの時に複数ある時は一覧表示                                        
-nnoremap <C-]> g<C-]> 
-
 " スクロールを滑らかにする
 map <C-U> <C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y>
 map <C-D> <C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E>
@@ -349,7 +400,7 @@ set wildmenu wildmode=list:full
 
 " ctags
 " 開いているファイルのディレクトリから、ホームディレクトリまでtagsを探す
-set tags=./tags;$HOME
+autocmd FileType php set tags=./tags;$HOME
 " tagsジャンプの時に複数ある場合は一覧表示                                        
 nnoremap <C-]> g<C-]> 
 inoremap <C-]> <ESC>g<C-]> 
