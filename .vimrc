@@ -316,7 +316,7 @@ set encoding=utf-8
 " バッファのファイルの文字コード（fileencodingが空の場合はencodingと同じ値となるため外す
 "set fileencoding=utf-8
 " 編集開始時に考慮する文字コード(自動判別の設定)
-set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,utf-8 
+set fileencodings=utf-8 
 "ファイルフォーマット
 set fileformats=unix,dos,mac
 
