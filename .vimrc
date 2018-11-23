@@ -36,6 +36,8 @@ if dein#load_state('$HOME/.vim/dein')
   call dein#add('vim-scripts/taglist.vim')
   " シンタックスチェック
   call dein#add('w0rp/ale')
+  " Xdebug
+  "call dein#add('vim-vdebug/vdebug')
   
 " Required:
   call dein#end()
@@ -226,7 +228,16 @@ set updatetime=250
 "  taglist.vim
 "----------------------------------------------------------
 nnoremap tl :TlistOpen<ESC>
+nnoremap tlc :TlistClose<ESC>
 
+""一つのファイルの内容しか表示しない
+let Tlist_Show_One_File = 1
+"常に左側に表示
+let Tlist_Use_Left_Window = 1
+""タグリストウィンドウだけになったら閉じる
+let Tlist_Exit_OnlyWindow = 1
+"phpの場合は変数を表示しない（関数のみ）
+"let tlist_php_settings='php;f:function'
 
 "----------------------------------------------------------
 "  ale
@@ -236,7 +247,7 @@ let g:ale_enabled = 0
 
 " オンとオフを切り替えられるようにする
 nnoremap l<CR> :ALEEnable<CR>
-nnoremap loff<CR> :ALEDisable<CR>
+nnoremap lc<CR> :ALEDisable<CR>
 
 " syntaxチェックのみ使用する
 let g:ale_linters = {
@@ -279,6 +290,11 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " <C-k>で前のエラーへ、<C-j>で次のエラーへ
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+
+"----------------------------------------------------------
+" vdebug
+"----------------------------------------------------------
 
 
 "----------------------------------------------------------
