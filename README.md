@@ -1,6 +1,7 @@
 # dotfiles
 
-# シンボリックリンクを張って使用する
+## シンボリックリンクを張って使用する
+
 ```bash
 ln -s dotfiles/.bashrc ~/.bashrc
 ln -s dotfiles/.vimrc ~/.vimrc
