@@ -14,3 +14,7 @@ export PATH=$HOME/.config/composer/vendor/bin:$PATH
 PS1="[\[\e[0;36m\]\u@\h\[\e[0m\]] \[\e[0;35m\]\w\[\e[0m\] \$ "
 
 PATH="$PATH:~/bin"
+
+# ls 色設定
+export CLICOLOR=1
+export LSCOLORS="GxFxCxDxBxegedabagaced"
