@@ -18,3 +18,8 @@ PATH="$PATH:~/bin"
 # ls 色設定
 export CLICOLOR=1
 export LSCOLORS="GxFxCxDxBxegedabagaced"
+
+alias vi="vim"
+# lessで、vimと同じ色をつける
+vim_version=`vim --version | head -1 | sed 's/^.*\ \([0-9]\)\.\([0-9]\)\ .*$/\1\2/'`
+alias less='/usr/share/vim/vim${vim_version}/macros/less.sh'
